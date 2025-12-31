@@ -1,6 +1,10 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-export function Deck(){
+type DeckProps = {
+    title: string
+}
+
+export function Deck({ title }: DeckProps){
   return (
      <TouchableOpacity style={styles.deck} activeOpacity={0.7}>
         <View style={styles.cards}>
@@ -8,7 +12,7 @@ export function Deck(){
             <View style={styles.card2}/>
             <View style={styles.card3}/>
         </View>
-        <Text style={styles.deckName}>Programação</Text>
+        <Text style={styles.deckName}>{title}</Text>
     </TouchableOpacity>
   )
 }

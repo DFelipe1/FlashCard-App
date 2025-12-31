@@ -3,7 +3,6 @@ export const decks = [
     id: "1",
     title: "React",
     description: "Hooks, componentes, estado e ciclo de vida",
-    color: "#4f46e5",
     cards: [
       {
         id: "1-1",
@@ -26,7 +25,6 @@ export const decks = [
     id: "2",
     title: "JavaScript",
     description: "Fundamentos da linguagem e lógica",
-    color: "#f59e0b",
     cards: [
       {
         id: "2-1",
@@ -49,7 +47,6 @@ export const decks = [
     id: "3",
     title: "Redes de Computadores",
     description: "Protocolos, camadas e comunicação",
-    color: "#10b981",
     cards: [
       {
         id: "3-1",
@@ -72,7 +69,6 @@ export const decks = [
     id: "4",
     title: "Banco de Dados",
     description: "Modelagem, SQL e NoSQL",
-    color: "#ef4444",
     cards: [
       {
         id: "4-1",
@@ -95,7 +91,6 @@ export const decks = [
     id: "5",
     title: "UI / UX",
     description: "Design de interfaces e experiência do usuário",
-    color: "#8b5cf6",
     cards: [
       {
         id: "5-1",

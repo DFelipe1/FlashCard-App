@@ -1,5 +1,6 @@
 import { Deck } from "@/components/Deck";
 import { Header } from "@/components/Header";
+import { decks } from '@/data/data';
 import { ScrollView, StatusBar, StyleSheet, View } from "react-native";
 
 export default function Index(){
@@ -8,9 +9,9 @@ export default function Index(){
             <Header/>
             <ScrollView>
                 <View style={styles.decks}>
-                    <Deck/>
-                    <Deck/>
-                    <Deck/>
+                    {decks.map(deck => {
+                        return <Deck key={deck.id} title={deck.title}/>
+                    })}
                 </View>
             </ScrollView>
         
