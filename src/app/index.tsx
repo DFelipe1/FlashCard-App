@@ -4,13 +4,16 @@ import { decks } from '@/data/data';
 import { ScrollView, StatusBar, StyleSheet, View } from "react-native";
 
 export default function Index(){
+
+    
+
     return (
         <>
             <Header/>
             <ScrollView>
                 <View style={styles.decks}>
                     {decks.map(deck => {
-                        return <Deck key={deck.id} title={deck.title}/>
+                        return <Deck key={deck.id} title={deck.title} id={deck.id}/>
                     })}
                 </View>
             </ScrollView>

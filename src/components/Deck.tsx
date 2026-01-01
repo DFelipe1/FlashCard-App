@@ -1,19 +1,28 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useRouter } from "expo-router";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 type DeckProps = {
+    id: string
     title: string
 }
 
-export function Deck({ title }: DeckProps){
+export function Deck({ title, id }: DeckProps){
+
+    const router = useRouter()
+
+    function handleScreenDeckId(id: string) {
+        router.push(`/${id}`)
+    }
+
   return (
-     <TouchableOpacity style={styles.deck} activeOpacity={0.7}>
+     <Pressable onPress={()=> handleScreenDeckId(id)} style={({ pressed }) => [ styles.deck, pressed && styles.pressed]}>
         <View style={styles.cards}>
             <View style={styles.card1}/>
             <View style={styles.card2}/>
             <View style={styles.card3}/>
         </View>
         <Text style={styles.deckName}>{title}</Text>
-    </TouchableOpacity>
+    </Pressable>
   )
 }
 
@@ -30,6 +39,10 @@ const styles = StyleSheet.create({
         gap: 12,
         overflow: 'hidden',
         boxShadow: "2px 2px 12px rgba(0,0,0,0.1)",
+    },
+    pressed: {
+        opacity: 0.85,
+        transform: [{ scale: 0.97 }],
     },
 
     deckName: {

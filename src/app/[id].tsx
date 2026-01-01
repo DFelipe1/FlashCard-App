@@ -1,8 +1,8 @@
-import { useSearchParams } from "expo-router/build/hooks"
-import { Text, View } from "react-native"
+import { useLocalSearchParams } from "expo-router";
+import { Text, View } from "react-native";
 
-export function FlaskCards(){
-  const id = useSearchParams()
+export default function FlaskCards(){
+  const { id } = useLocalSearchParams();
 
   return (
     <View>
