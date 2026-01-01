@@ -1,9 +1,29 @@
-import { StyleSheet, Text, View } from "react-native";
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { useRouter } from 'expo-router';
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
-export function Header(){
+type HeaderProps = {
+  isBack?: boolean
+  title: string
+}
+
+export function Header({isBack= false, title}: HeaderProps){
+
+  const route = useRouter()
+
+  function handleGoBack() {
+    route.back()
+  }
+
   return(
     <View style={styles.header}>
-        <Text style={styles.title}>Meus Decks</Text>
+      {isBack && (
+        <Pressable onPress={handleGoBack} style={({ pressed }) => [ styles.back, pressed && styles.pressed]}>
+          <Ionicons name="arrow-back" size={24}/>
+        </Pressable>
+      )}
+      
+      <Text style={styles.title}>{title}</Text>
     </View>
   )
 }
@@ -12,14 +32,30 @@ const styles = StyleSheet.create({
     header: {
         marginVertical: 12,
         paddingVertical: 16,
-        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'center',
         borderBottomWidth: 0.5,
         borderBottomColor: '#ddd',
         boxShadow: "0 5px 6px rgba(0,0,0,0.02)",
+        position: 'relative',
     },
 
     title: {
         fontSize: 18,
         fontWeight: '500'
-    }
+    },
+
+    back: {
+      padding: 4,
+      borderRadius: 4,
+      position: 'absolute',
+      left: 16,
+      top: '50%',
+      backgroundColor: '#f7f7f7ff',
+      boxShadow: "2px 2px 12px rgba(0,0,0,0.1)",
+    },
+    pressed: {
+        opacity: 0.85,
+        transform: [{ scale: 0.97 }],
+    },
   })
