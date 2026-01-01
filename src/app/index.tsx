@@ -9,7 +9,7 @@ export default function Index(){
 
     return (
         <>
-            <Header/>
+            <Header  title="Meus Decks"/>
             <ScrollView>
                 <View style={styles.decks}>
                     {decks.map(deck => {
