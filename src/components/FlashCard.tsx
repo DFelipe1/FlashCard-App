@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Pressable, StyleSheet, Text } from "react-native";
+import { useEffect, useState } from "react";
+import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 interface Card{
   id: string,
@@ -8,38 +9,101 @@ interface Card{
 }
 
 type FlashCardProps = {
-  card: Card
+  card: Card,
+  active: boolean
 }
 
-export function FlashCard({ card }: FlashCardProps){
+const { width } = Dimensions.get("window")
+
+export function FlashCard({ card, active }: FlashCardProps){
+
+  const flipped = useSharedValue(0)
 
   const [ toggleShowAnwser, setToggleShowAnwser ] = useState(false)
 
+  useEffect(() => {
+    if (!active) {
+      setToggleShowAnwser(false);
+      flipped.value = 0
+    }
+  }, [active]);
+
+  const frontStyle = useAnimatedStyle(() => ({
+    transform: [
+      { perspective: 1000 },
+      { rotateY: `${flipped.value * 180}deg` },
+    ]
+  }))
+
+  const backStyle = useAnimatedStyle(() => ({
+    transform: [
+      { perspective: 1000 },
+      { rotateY:`${flipped.value * 180 + 180}deg`}
+    ]
+  }))
+
+  const flip = () => {
+    flipped.value = withTiming(flipped.value ? 0 : 1, {
+      duration: 400
+    })
+  }
+
   return (
-    <Pressable onPress={() => setToggleShowAnwser(!toggleShowAnwser)} style={styles.card} key={card.id}>
-      {!toggleShowAnwser ? (
-      <Text style={styles.question}>
-        {card.question}
-      </Text>
-      ) : (
+    <Pressable onPress={flip} style={styles.cardContainer} key={card.id}>
+     <View style={styles.flipContainer}>
+      <Animated.View style={[styles.card, styles.front, frontStyle]}>
+        <Text style={styles.question}>
+          {card.question}
+        </Text>
+      </Animated.View>
+
+      <Animated.View style={[styles.card, styles.back, backStyle]}>
         <Text style={styles.anwser}>
           {card.answer}
         </Text>
-      )}
+      </Animated.View>
+     </View>
     </Pressable>
   )
 }
 
 const styles = StyleSheet.create({
+  cardContainer: {
+    width: width,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 12
+  },
+
+  flipContainer: {
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
+  },
+
+  front: {
+    backfaceVisibility: "hidden",
+  },
+
+  back: {
+    backfaceVisibility: "hidden",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    backgroundColor: "#fff",
+  },
+
   card: {
-    width: '100%',
-    minHeight: 670,
+    width: width,
+    minHeight: "100%",
+    backfaceVisibility: 'hidden',
     borderRadius: 24,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#bcfc9f',
     padding: 24,
-    marginBottom: 12
   },
 
   question:{
@@ -49,6 +113,7 @@ const styles = StyleSheet.create({
   },
 
   anwser: {
+    color: '#000',
     fontSize: 16,
     fontWeight: "300",
     textAlign: "center"

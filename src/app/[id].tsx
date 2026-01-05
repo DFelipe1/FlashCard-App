@@ -33,7 +33,10 @@ export default function FlaskCards(){
           <FlatList
             data={deck.cards}
             keyExtractor={(item) => item.id}
+            horizontal
             pagingEnabled
+            snapToAlignment="center"
+            decelerationRate='fast'
             showsHorizontalScrollIndicator={false}
             viewabilityConfig={viewabilityConfig}
             onViewableItemsChanged={({ viewableItems  }) => {
@@ -43,8 +46,11 @@ export default function FlaskCards(){
                 setNumberShowCard(first.index + 1)
               }
             }}
-            renderItem={({ item }) => (
-             <FlashCard card={item}/>
+            renderItem={({ item, index }) => (
+             <FlashCard 
+              card={item}
+              active={index + 1 === numberShowCard}
+            />
             )}
           />
         </View>
@@ -60,7 +66,6 @@ const styles = StyleSheet.create({
 
   content: {
     flex: 1,
-    padding: 24,
     alignContent: 'center'
   },
 
@@ -85,27 +90,4 @@ const styles = StyleSheet.create({
   textPaginationCards: {
     fontSize: 12,
   },
-
-  card: {
-    width: '100%',
-    minHeight: 670,
-    borderRadius: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#bcfc9f',
-    padding: 24,
-    marginBottom: 12
-  },
-
-  question:{
-    fontSize: 20,
-    fontWeight: "700",
-    textAlign: "center"
-  },
-
-  anwser: {
-    fontSize: 16,
-    fontWeight: "300",
-    textAlign: "center"
-  }
 })
