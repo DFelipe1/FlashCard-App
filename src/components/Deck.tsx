@@ -1,5 +1,7 @@
 import { useRouter } from "expo-router";
+import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { DeleteDeckModal } from "./DeleteDeckModal";
 
 type DeckProps = {
     id: string
@@ -7,6 +9,11 @@ type DeckProps = {
 }
 
 export function Deck({ title, id }: DeckProps){
+    const [modalVisible, setModalVisible] = useState(false)
+    
+    function toggleModal() {
+        setModalVisible(!modalVisible)
+    }
 
     const router = useRouter()
 
@@ -15,13 +22,20 @@ export function Deck({ title, id }: DeckProps){
     }
 
   return (
-     <Pressable onPress={()=> handleScreenDeckId(id)} style={({ pressed }) => [ styles.deck, pressed && styles.pressed]}>
+     <Pressable 
+        onPress={()=> handleScreenDeckId(id)} 
+        onLongPress={() => setModalVisible(true)}
+        delayLongPress={400}
+        style={({ pressed }) => [ styles.deck, pressed && styles.pressed]}
+    >
         <View style={styles.cards}>
             <View style={styles.card1}/>
             <View style={styles.card2}/>
             <View style={styles.card3}/>
         </View>
         <Text style={styles.deckName}>{title}</Text>
+
+        <DeleteDeckModal deckId={id} toggleModal={toggleModal} modalVisible={modalVisible}/>
     </Pressable>
   )
 }
