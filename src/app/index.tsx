@@ -1,15 +1,29 @@
+import { CreateDeckModal } from "@/components/CreateDeckModal";
 import { Deck } from "@/components/Deck";
 import { Header } from "@/components/Header";
 import { decks } from '@/data/data';
-import { ScrollView, StatusBar, StyleSheet, View } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useState } from "react";
+import { Pressable, ScrollView, StatusBar, StyleSheet, View } from "react-native";
 
 export default function Index(){
 
-    
+    const [modalVisible, setModalVisible] = useState(false)
+
+    function toggleModal() {
+     setModalVisible(!modalVisible)
+    }
 
     return (
         <>
-            <Header  title="Meus Decks"/>
+            <Header  title="Meus Decks" asChild>
+                
+                <Pressable onPress={toggleModal} style={({ pressed }) => [ styles.addButton, pressed && styles.pressed]}>
+                    <Ionicons name="add" size={24} color={'#fff'}/>
+                </Pressable>
+                      
+                <CreateDeckModal modalVisible={modalVisible} toggleModal={toggleModal}/>
+            </Header>
             <ScrollView>
                 <View style={styles.decks}>
                     {decks.map(deck => {
@@ -18,7 +32,7 @@ export default function Index(){
                 </View>
             </ScrollView>
         
-            <StatusBar barStyle={"light-content"}/>
+            <StatusBar barStyle={"default"} />
         </>
     )
 }
@@ -31,5 +45,19 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         gap: 12,
         padding: 8,
+    },
+     pressed: {
+        opacity: 0.85,
+        transform: [{ scale: 0.97 }],
+    },
+
+    addButton: {
+      padding: 4,
+      borderRadius: 4,
+      position: 'absolute',
+      right: 16,
+      top: '50%',
+      backgroundColor: '#222',
+      boxShadow: "2px 2px 12px rgba(0,0,0,0.1)",
     },
 })

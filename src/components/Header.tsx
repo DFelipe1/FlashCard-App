@@ -1,19 +1,24 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
+import { ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 type HeaderProps = {
   isBack?: boolean
   title: string
+  asChild?: boolean
+  children?: ReactNode
 }
 
-export function Header({isBack= false, title}: HeaderProps){
+export function Header({isBack= false, title, children, asChild = false}: HeaderProps){
 
   const route = useRouter()
 
   function handleGoBack() {
     route.back()
   }
+
+  
 
   return(
     <View style={styles.header}>
@@ -24,6 +29,9 @@ export function Header({isBack= false, title}: HeaderProps){
       )}
       
       <Text style={styles.title}>{title}</Text>
+
+      {asChild && children}
+
     </View>
   )
 }
@@ -51,11 +59,11 @@ const styles = StyleSheet.create({
       position: 'absolute',
       left: 16,
       top: '50%',
-      backgroundColor: '#f7f7f7ff',
+      backgroundColor: '#f7f7f7',
       boxShadow: "2px 2px 12px rgba(0,0,0,0.1)",
     },
     pressed: {
         opacity: 0.85,
         transform: [{ scale: 0.97 }],
     },
-  })
+})
