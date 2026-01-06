@@ -1,13 +1,16 @@
+import { CreateCardModal } from "@/components/CreateCardModal";
 import { FlashCard } from "@/components/FlashCard";
 import { Header } from "@/components/Header";
 import { decks } from "@/data/data";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function FlaskCards(){
-  const [ numberShowCard, setNumberShowCard ] = useState(1)
-  
+  const [ numberShowCard, setNumberShowCard ] = useState(1)  
+  const [modalVisible, setModalVisible] = useState(false)
+
   const { id } = useLocalSearchParams();
 
   const deck = decks.find(deck => deck.id === id)
@@ -20,11 +23,19 @@ export default function FlaskCards(){
     itemVisiblePercentThreshold: 70
   }
 
-
+  function toggleModal() {
+    setModalVisible(!modalVisible)
+  }
 
   return (
     <View style={styles.container}>
-      <Header isBack title={deck.title} />
+      <Header isBack title={deck.title} asChild>
+         <Pressable onPress={toggleModal} style={({ pressed }) => [ styles.addButton, pressed && styles.pressed]}>
+              <Ionicons name="add" size={24} color={'#fff'}/>
+          </Pressable>
+                
+          <CreateCardModal modalVisible={modalVisible} toggleModal={toggleModal} deckId={id}/>
+      </Header>
       <View style={styles.content}>
         <View style={styles.containerDeck}>
           <View style={styles.paginationCards}>
@@ -90,4 +101,18 @@ const styles = StyleSheet.create({
   textPaginationCards: {
     fontSize: 12,
   },
+   pressed: {
+        opacity: 0.85,
+        transform: [{ scale: 0.97 }],
+    },
+
+    addButton: {
+      padding: 4,
+      borderRadius: 4,
+      position: 'absolute',
+      right: 16,
+      top: '50%',
+      backgroundColor: '#222',
+      boxShadow: "2px 2px 12px rgba(0,0,0,0.1)",
+    },
 })
