@@ -1,6 +1,9 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { useEffect, useState } from "react";
 import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { DeleteCardModal } from "./DeleteCardModal";
+import { EditCardModal } from "./EditCardModal";
 
 interface Card{
   id: string,
@@ -17,13 +20,21 @@ const { width } = Dimensions.get("window")
 
 export function FlashCard({ card, active }: FlashCardProps){
 
-  const flipped = useSharedValue(0)
+  const [modalEditVisible, setModalEditVisible] = useState(false)
+  const [modalDeleteVisible, setModalDeleteVisible] = useState(false)
+      
+  function toggleEditModal() {
+      setModalEditVisible(!modalEditVisible)
+  }
 
-  const [ toggleShowAnwser, setToggleShowAnwser ] = useState(false)
+  function toggleDeleteModal() {
+      setModalDeleteVisible(!modalDeleteVisible)
+  }
+
+  const flipped = useSharedValue(0)
 
   useEffect(() => {
     if (!active) {
-      setToggleShowAnwser(false);
       flipped.value = 0
     }
   }, [active]);
@@ -55,6 +66,7 @@ export function FlashCard({ card, active }: FlashCardProps){
         <Text style={styles.question}>
           {card.question}
         </Text>
+       
       </Animated.View>
 
       <Animated.View style={[styles.card, styles.back, backStyle]}>
@@ -63,6 +75,18 @@ export function FlashCard({ card, active }: FlashCardProps){
         </Text>
       </Animated.View>
      </View>
+
+      <View style={styles.actions}>
+        <Pressable onPress={() => setModalEditVisible(true)} style={styles.action}>
+          <Ionicons name="pencil" size={24}/>
+        </Pressable>
+        <Pressable onPress={() => setModalDeleteVisible(true)} style={styles.action}>
+          <Ionicons name="trash" size={24}/>
+        </Pressable>
+      </View>
+     <DeleteCardModal modalVisible={modalDeleteVisible} toggleModal={toggleDeleteModal} deckId={card.id} />
+     <EditCardModal modalVisible={modalEditVisible} toggleModal={toggleEditModal} deckId={card.id}/>
+
     </Pressable>
   )
 }
@@ -117,5 +141,29 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "300",
     textAlign: "center"
+  },
+
+  actions: {
+    width: '100%',
+    position: 'absolute',
+    bottom: 10,
+    flexDirection: 'row',
+    gap: 8
+  },
+
+  action: {
+    flex: 1,
+    padding: 12,
+    backgroundColor: '#ffffff52',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+      shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   }
 })
