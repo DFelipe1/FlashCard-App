@@ -85,8 +85,15 @@ export function FlashCard({ card, active, deckId }: FlashCardProps){
           <Ionicons name="trash" size={24}/>
         </Pressable>
       </View>
-     <DeleteCardModal modalVisible={modalDeleteVisible} toggleModal={toggleDeleteModal} deckId={deckId} cardId={card.id} />
-     <EditCardModal modalVisible={modalEditVisible} toggleModal={toggleEditModal} deckId={deckId} cardId={card.id}/>
+      <DeleteCardModal modalVisible={modalDeleteVisible} toggleModal={toggleDeleteModal} deckId={deckId} cardId={card.id} />
+      <EditCardModal 
+        modalVisible={modalEditVisible} 
+        toggleModal={toggleEditModal} 
+        deckId={deckId} 
+        cardId={card.id}
+        question={card.question}
+        answer={card.answer}
+      />
 
     </Pressable>
   )

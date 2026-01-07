@@ -8,23 +8,26 @@ interface EditCardModalProps{
   toggleModal: () => void
   deckId: string
   cardId: string
+  question: string
+  answer: string
 }
 
-export function EditCardModal({ modalVisible, toggleModal, deckId, cardId }: EditCardModalProps){
+export function EditCardModal({ modalVisible, toggleModal, deckId, cardId, question, answer }: EditCardModalProps){
 
-  const [question, setQuestion] = useState('')
-  const [answer, setAnswer] = useState('')
+
+  const [newQuestion, setNewQuestion] = useState(question)
+  const [newAnswer, setNewAnswer] = useState(answer)
 
   const editCard = useDeckStore(state => state.editCard)
 
 
   function handleUpdateCard(){
-   if(!question.trim() || !answer.trim()) return
+   if(!newQuestion.trim() || !newAnswer.trim()) return
 
-   editCard(deckId, cardId, question, answer)
+   editCard(deckId, cardId, newQuestion, newAnswer)
 
-   setQuestion("")
-   setAnswer("")
+   setNewQuestion("")
+   setNewAnswer("")
    toggleModal()
   }
 
@@ -50,12 +53,12 @@ export function EditCardModal({ modalVisible, toggleModal, deckId, cardId }: Edi
             <Text style={styles.text}>
               Qual a pergunta dessa carta?
             </Text>
-            <TextInput style={styles.input} value={question} onChangeText={e => setQuestion(e)} placeholder='Digite a pergunta'/>
+            <TextInput style={styles.input} value={newQuestion} onChangeText={e => setNewQuestion(e)} placeholder='Digite a pergunta'/>
             
             <Text style={styles.text}>
               Qual a resposta da pergunta?
             </Text>
-            <TextInput style={styles.input} value={answer} onChangeText={e => setAnswer(e)} placeholder='Digite a resposta'/>
+            <TextInput style={styles.input} value={newAnswer} onChangeText={e => setNewAnswer(e)} placeholder='Digite a resposta'/>
 
             <Pressable onPress={handleUpdateCard} style={({ pressed }) => [ styles.button, pressed && styles.pressed]}>
               <Text style={styles.buttonText}>
