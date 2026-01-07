@@ -1,4 +1,6 @@
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { create } from "zustand"
+import { createJSONStorage, persist } from "zustand/middleware"
 
 type Card = {
   id: string
@@ -23,7 +25,8 @@ type Store = {
   removeCard: (deckId: string, cardId: string) => void
 }
 
-export const useDeckStore = create<Store>((set) => ({
+export const useDeckStore = create<Store>()(
+  persist((set) => ({
   decks: [],
 
   createDeck: (title) =>
@@ -86,5 +89,10 @@ export const useDeckStore = create<Store>((set) => ({
       ),
     })),
     
-}))
+}),
+  {
+    name: "flashcards-storage",
+    storage: createJSONStorage(()=> AsyncStorage),
+  }
+))
 
