@@ -1,4 +1,4 @@
-import { decks } from '@/data/data';
+import { useDeckStore } from '@/store/deckStore';
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
 import { Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
@@ -12,15 +12,15 @@ export function CreateDeckModal({ modalVisible, toggleModal }: CreateDeckModalPr
 
   const [deckName, setDeckName] = useState('')
 
+  const createDeck = useDeckStore(state => state.createDeck)
 
   function handleCreatedDeck(){
-    const newDeck = {
-      id: String(decks.length + 1),
-      title: deckName,
-      description: "",
-      cards: []
-    }
-    decks.push(newDeck)
+    if(!deckName.trim()) return
+
+    createDeck(deckName)
+
+    setDeckName("")
+    toggleModal()
   }
 
   return (

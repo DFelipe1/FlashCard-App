@@ -1,16 +1,19 @@
+import { useDeckStore } from "@/store/deckStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
 interface DeleteDeckModalProps{
   modalVisible: boolean
   toggleModal: () => void
-  deckId: string | string[]
+  deckId: string
 }
 
 export function DeleteDeckModal({ modalVisible, toggleModal, deckId }: DeleteDeckModalProps){
+   const deleteDeck = useDeckStore(state => state.deleteDeck)
 
   function handleDeleteDeck(){
-    
+    deleteDeck(deckId)
+      toggleModal()
   }
 
   return (

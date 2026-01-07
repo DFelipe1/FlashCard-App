@@ -12,13 +12,14 @@ interface Card{
 }
 
 type FlashCardProps = {
-  card: Card,
+  card: Card
+  deckId: string
   active: boolean
 }
 
 const { width } = Dimensions.get("window")
 
-export function FlashCard({ card, active }: FlashCardProps){
+export function FlashCard({ card, active, deckId }: FlashCardProps){
 
   const [modalEditVisible, setModalEditVisible] = useState(false)
   const [modalDeleteVisible, setModalDeleteVisible] = useState(false)
@@ -84,8 +85,8 @@ export function FlashCard({ card, active }: FlashCardProps){
           <Ionicons name="trash" size={24}/>
         </Pressable>
       </View>
-     <DeleteCardModal modalVisible={modalDeleteVisible} toggleModal={toggleDeleteModal} deckId={card.id} />
-     <EditCardModal modalVisible={modalEditVisible} toggleModal={toggleEditModal} deckId={card.id}/>
+     <DeleteCardModal modalVisible={modalDeleteVisible} toggleModal={toggleDeleteModal} deckId={deckId} cardId={card.id} />
+     <EditCardModal modalVisible={modalEditVisible} toggleModal={toggleEditModal} deckId={deckId} cardId={card.id}/>
 
     </Pressable>
   )
@@ -115,6 +116,7 @@ const styles = StyleSheet.create({
     backfaceVisibility: "hidden",
     position: "absolute",
     top: 0,
+    bottom:0,
     left: 0,
     backgroundColor: "#fff",
   },

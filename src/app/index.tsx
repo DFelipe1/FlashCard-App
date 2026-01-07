@@ -1,12 +1,14 @@
 import { CreateDeckModal } from "@/components/CreateDeckModal";
 import { Deck } from "@/components/Deck";
 import { Header } from "@/components/Header";
-import { decks } from '@/data/data';
+import { useDeckStore } from "@/store/deckStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
 import { Pressable, ScrollView, StatusBar, StyleSheet, View } from "react-native";
 
 export default function Index(){
+
+    const decks = useDeckStore(state => state.decks)
 
     const [modalVisible, setModalVisible] = useState(false)
 

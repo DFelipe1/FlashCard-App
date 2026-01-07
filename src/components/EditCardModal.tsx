@@ -1,3 +1,4 @@
+import { useDeckStore } from "@/store/deckStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
 import { Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
@@ -5,17 +6,26 @@ import { Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-nativ
 interface EditCardModalProps{
   modalVisible: boolean
   toggleModal: () => void
-  deckId: string | string[]
+  deckId: string
+  cardId: string
 }
 
-export function EditCardModal({ modalVisible, toggleModal, deckId }: EditCardModalProps){
+export function EditCardModal({ modalVisible, toggleModal, deckId, cardId }: EditCardModalProps){
 
   const [question, setQuestion] = useState('')
   const [answer, setAnswer] = useState('')
 
+  const editCard = useDeckStore(state => state.editCard)
+
 
   function handleUpdateCard(){
-   
+   if(!question.trim() || !answer.trim()) return
+
+   editCard(deckId, cardId, question, answer)
+
+   setQuestion("")
+   setAnswer("")
+   toggleModal()
   }
 
   return (

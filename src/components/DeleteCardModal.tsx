@@ -1,16 +1,21 @@
+import { useDeckStore } from "@/store/deckStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
 interface DeleteCardModalProps{
   modalVisible: boolean
   toggleModal: () => void
-  deckId: string | string[]
+  deckId: string
+  cardId: string
 }
 
-export function DeleteCardModal({ modalVisible, toggleModal, deckId }: DeleteCardModalProps){
+export function DeleteCardModal({ modalVisible, toggleModal, deckId, cardId }: DeleteCardModalProps){
+
+  const removeCard = useDeckStore(state => state.removeCard)
 
   function handleDeleteCard(){
-    
+    removeCard(deckId, cardId)
+    toggleModal()
   }
 
   return (

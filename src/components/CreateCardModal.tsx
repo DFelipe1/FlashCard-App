@@ -1,4 +1,4 @@
-import { decks } from "@/data/data";
+import { useDeckStore } from "@/store/deckStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
 import { Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
@@ -6,7 +6,7 @@ import { Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-nativ
 interface CreateDeckModalProps{
   modalVisible: boolean
   toggleModal: () => void
-  deckId: string | string[]
+  deckId: string
 }
 
 export function CreateCardModal({ modalVisible, toggleModal, deckId }: CreateDeckModalProps){
@@ -14,25 +14,14 @@ export function CreateCardModal({ modalVisible, toggleModal, deckId }: CreateDec
   const [question, setQuestion] = useState('')
   const [answer, setAnswer] = useState('')
 
+  const addCard = useDeckStore(state => state.addCard)
 
   function handleCreatedCard(){
-    decks.map(deck => {
-      deck.id === String(deckId)
-      ? {
-        ...deck,
-        cards: [
-          ...deck.cards,
-          {
-            id: String(deck.cards.length + 1),
-            question: question,
-            answer: answer
-          }
-        ]
-      } : {
-        deck
-      }
-    })
+    if(!question.trim() || !answer.trim()) return
 
+    addCard(deckId, question, answer)
+
+    toggleModal()
     setAnswer("")
     setQuestion("")
   }

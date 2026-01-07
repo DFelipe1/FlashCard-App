@@ -1,7 +1,8 @@
 import { CreateCardModal } from "@/components/CreateCardModal";
 import { FlashCard } from "@/components/FlashCard";
 import { Header } from "@/components/Header";
-import { decks } from "@/data/data";
+import { useDeckStore } from "@/store/deckStore";
+import { getParam } from "@/utils/getParam";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
@@ -11,9 +12,17 @@ export default function FlaskCards(){
   const [ numberShowCard, setNumberShowCard ] = useState(1)  
   const [modalVisible, setModalVisible] = useState(false)
 
+  const decks = useDeckStore(state => state.decks)
+
   const { id } = useLocalSearchParams();
 
-  const deck = decks.find(deck => deck.id === id)
+  const deckId = getParam(id)
+
+  if (!deckId) {
+    return <Text>Deck inválido</Text>
+  }
+
+  const deck = decks.find(deck => deck.id === deckId)
 
   if(!deck){
     return <Text>not exist deck id</Text>
@@ -34,7 +43,7 @@ export default function FlaskCards(){
               <Ionicons name="add" size={24} color={'#fff'}/>
           </Pressable>
                 
-          <CreateCardModal modalVisible={modalVisible} toggleModal={toggleModal} deckId={id}/>
+          <CreateCardModal modalVisible={modalVisible} toggleModal={toggleModal} deckId={deckId}/>
       </Header>
       <View style={styles.content}>
         <View style={styles.containerDeck}>
@@ -60,6 +69,7 @@ export default function FlaskCards(){
             renderItem={({ item, index }) => (
              <FlashCard 
               card={item}
+              deckId={deckId}
               active={index + 1 === numberShowCard}
             />
             )}
